@@ -174,8 +174,9 @@ Example use in a spring context file:
 ```
 
 This code is provided as is, tests cases are lacking, it works in OSGi.
-License: public domain.
+License: MIT.
 
 Alternatives: vcap's runtime java library.
+But: it has a lot of dependencies and it does not support transparently switching from a cloudfoundry deployment to a non-cloudfoundry deployment
 
 

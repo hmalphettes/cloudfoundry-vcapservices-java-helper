@@ -4,7 +4,7 @@
 
   <groupId>org.intalio.cloudfoundry</groupId>
   <artifactId>vcapservices</artifactId>
-  <version>1.0-001</version>
+  <version>1.0-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <name>VCAP_SERVICES Parser</name>
