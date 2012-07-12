@@ -1,0 +1,33 @@
+{ "mongodb-1.8" : [ { "credentials" : { "db" : "db",
+            "host" : "127.0.0.1",
+            "hostname" : "127.0.0.1",
+            "name" : "fa1ff8f3-a01a-4449-9f82-855dd1aa55cb",
+            "password" : "e707d000-7db9-4fd1-809d-e96d73ee9199",
+            "port" : 25001,
+            "username" : "b95c5336-f26f-40a0-96b9-cd291142bb45"
+          },
+        "label" : "mongodb-1.8",
+        "name" : "mg_intalio",
+        "plan" : "free",
+        "tags" : [ "mongodb",
+            "mongodb-1.6",
+            "nosql"
+          ]
+      } ],
+  "postgresql-9.0" : [ { "credentials" : { "host" : "127.0.0.1",
+            "hostname" : "127.0.0.1",
+            "name" : "d44fa646e81914b5a932bbedd849d64ae",
+            "password" : "p688ee953172140bd922f863e67d5e7a1",
+            "port" : 5432,
+            "user" : "ue0cff84671124e6eb387e8b90446e2c4",
+            "username" : "ue0cff84671124e6eb387e8b90446e2c4"
+          },
+        "label" : "postgresql-9.0",
+        "name" : "pg_intalio",
+        "plan" : "free",
+        "tags" : [ "postgresql",
+            "postgresql-9.0",
+            "relational"
+          ]
+      } ]
+}

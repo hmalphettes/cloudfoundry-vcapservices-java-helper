@@ -1,0 +1,33 @@
+{ "mongodb-1.8" : [ { "credentials" : { "db" : "db",
+            "host" : "127.0.0.1",
+            "hostname" : "127.0.0.1",
+            "name" : "de6ab454-5d2c-4b6b-88bc-d4fabd71a4c1",
+            "password" : "1d010bfe-f3e5-4eb3-a152-92c3a0b3b669",
+            "port" : 25002,
+            "username" : "aaf98217-f31d-4515-a4b7-a21057789527"
+          },
+        "label" : "mongodb-1.8",
+        "name" : "mongodb-5f772",
+        "plan" : "free",
+        "tags" : [ "mongodb",
+            "mongodb-1.6",
+            "nosql"
+          ]
+      } ],
+  "postgresql-8.4" : [ { "credentials" : { "host" : "127.0.0.1",
+            "hostname" : "127.0.0.1",
+            "name" : "d4a64aca14edc485a951d3ef42a832c2e",
+            "password" : "pa58ca1f5472a41eaa7a9ca4b6b66214b",
+            "port" : 5432,
+            "user" : "u5be49159d3284ce89a31b4953a2782a3",
+            "username" : "u5be49159d3284ce89a31b4953a2782a3"
+          },
+        "label" : "postgresql-8.4",
+        "name" : "postgresql-4e672",
+        "plan" : "free",
+        "tags" : [ "postgresql",
+            "postgresql-8.4",
+            "relational"
+          ]
+      } ]
+}

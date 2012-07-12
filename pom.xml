@@ -1,0 +1,68 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>org.intalio.cloudfoundry</groupId>
+  <artifactId>vcapservices</artifactId>
+  <version>1.0-001</version>
+  <packaging>jar</packaging>
+
+  <name>VCAP_SERVICES Parser</name>
+  <url>http://intalio.com</url>
+  <licenses>
+    <license>
+      <name>MIT</name>
+      <url>http://www.opensource.org/licenses/mit-license.php</url>
+      <distribution>repo</distribution>
+      <comments>A very friendly OSS license</comments>
+    </license>
+  </licenses>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.json</groupId>
+      <artifactId>json</artifactId>
+      <version>20090211</version>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.8.2</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          <archive>  
+            <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
+          </archive> 
+        </configuration>
+      </plugin>
+      <plugin>   
+        <groupId>org.apache.felix</groupId>
+        <artifactId>maven-bundle-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>bundle-manifest</id>
+            <phase>process-classes</phase>
+            <goals>
+              <goal>manifest</goal>
+            </goals>   
+          </execution>
+        </executions>
+        <configuration>
+          <instructions>
+            <Export-Package>org.intalio.cloudfoundry.vcapservices,org.intalio.cloudfoundry.vcapservices.impl</Export-Package>
+            <Bundle-Description>Java API to parse Cloudfoundry VCAP_SERVICES</Bundle-Description>
+            <Bundle-Vendor>Intalio</Bundle-Vendor>
+            <_nouses>true</_nouses>
+          </instructions>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+  
+</project> 
