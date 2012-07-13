@@ -33,9 +33,19 @@ In order to use a postgresql database provided by cloudfoundry:
 <!-- AFTER: TRANSPARENT CLOUDFOUNDRY SUPPORT -->
 <bean id="vcapservices" class="org.intalio.cloudfoundry.vcapservices.impl.VCapServices"/>
 <bean id="dbUrl" factory-bean="vcapservices" factory-method="getConnectionAsURI">
+    
+    <!-- default URL of name of the sys property/env variable that contains
+    the URL used when not in cloudfoundry -->
 	<constructor-arg value="DATABASE_URL" />
+	
+	<!-- The scheme of the generated URI -->
 	<constructor-arg value="postgresql" />
+	
+	<!-- The regular expression for the type of the data-service -->
 	<constructor-arg value="/^postgres.*/" />
+	
+	<!-- Optional regular expression for the name of the data-service -->
+	<constructor-arg value="/^storedb$/" />
 </bean>
 ```
 If the app is not executed in cloudfoundry, it will continue to behave like before.
@@ -67,43 +77,24 @@ Build and tests with maven.
 Download here: http://www.intalio.org/public/maven2/org/intalio/cloudfoundry/vcapservices
 
 ## API - Other Examples
-
-### Simple example
-
-```xml
-<bean id="dbUrl" factory-bean="vcapservices" factory-method="getConnectionAsURI">
-    
-    <!-- default URL of name of the sys property/env variable that contains
-    the URL used when not in cloudfoundry -->
-	<constructor-arg value="DATABASE_URL" />
-	
-	<!-- The scheme of the generated URI -->
-	<constructor-arg value="postgresql" />
-	
-	<!-- The regular expression for the type of the data-service -->
-	<constructor-arg value="/^postgres.*/" />
-	
-	<!-- Optional regular expression for the name of the data-service -->
-	<constructor-arg value="/^storedb$/" />
-</bean>
-```
-
-### Multiple postgresql databases exposed in VCAP_SERVICES
+Multiple postgresql databases exposed in VCAP_SERVICES
 
 ```xml
 <bean id="dbOneUrl" factory-bean="vcapservices" factory-method="getConnectionAsURI">
 	<constructor-arg value="DATABASE_ONE_URL" />
 	<constructor-arg value="postgresql" />
 	<constructor-arg value="/^postgres.*/" />
-    <!-- The first data-service that service type match the regular expression '^postgres.*'
-    and that name match the regular expression '^one.*' -->
+    <!-- The first data-service that service type 
+         matches the regular expression '^postgres.*'
+         and that name match the regular expression '^one.*' -->
 	<constructor-arg value="/^one.*/" />
 </bean>
 <bean id="dbNotOneUrl" factory-bean="vcapservices" factory-method="getConnectionAsURI">
 	<constructor-arg value="DATABASE_NOT_ONE_URL" />
 	<constructor-arg value="postgresql" />
 	<constructor-arg value="/^postgres.*/" />
-	<!-- Negated: The first data-service that name does not match the regular expression -->
+	<!-- Negated: The first data-service that name does 
+	     not matches the regular expression -->
 	<constructor-arg value="!/^one.*/" />
 </bean>
 ```
