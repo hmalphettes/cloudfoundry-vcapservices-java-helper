@@ -41,10 +41,10 @@ In order to use a postgresql database provided by cloudfoundry:
 	<!-- The scheme of the generated URI -->
 	<constructor-arg value="postgresql" />
 	
-	<!-- The regular expression for the type of the data-service -->
+	<!-- The regular expression to select the type of the data-service -->
 	<constructor-arg value="/^postgres.*/" />
 	
-	<!-- Optional regular expression for the name of the data-service -->
+	<!-- Optional regular expression to select the name of the data-service -->
 	<constructor-arg value="/^storedb$/" />
 </bean>
 ```
@@ -86,7 +86,7 @@ Multiple postgresql databases exposed in VCAP_SERVICES
 	<constructor-arg value="/^postgres.*/" />
     <!-- The first data-service that service type 
          matches the regular expression '^postgres.*'
-         and that name match the regular expression '^one.*' -->
+         and that name matches the regular expression '^one.*' -->
 	<constructor-arg value="/^one.*/" />
 </bean>
 <bean id="dbNotOneUrl" factory-bean="vcapservices" factory-method="getConnectionAsURI">
@@ -94,7 +94,7 @@ Multiple postgresql databases exposed in VCAP_SERVICES
 	<constructor-arg value="postgresql" />
 	<constructor-arg value="/^postgres.*/" />
 	<!-- Negated: The first data-service that name does 
-	     not matches the regular expression -->
+	     not match the regular expression -->
 	<constructor-arg value="!/^one.*/" />
 </bean>
 ```
