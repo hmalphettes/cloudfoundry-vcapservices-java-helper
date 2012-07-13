@@ -12,12 +12,14 @@ VCAP_SERVICES java parser
 * Ignore databases APIs; parse JSON and produces URIs.
 * Minimize dependencies
 
-## Usage
+## Usage: Adding cloudfoundry support to an existing setup
 
 [ZkTodo2](https://github.com/simbo1905/ZkToDo2) database connection URL in a
-spring context file:
+spring context file original:
 ```xml
-<!-- 
+<!--
+BEFORE: CLOUDFOUNDRY SUPPORT
+
 DATABASE_URL should be set with either "-DDATABASE_URL=postgres://user:password@hostname/dbname"
 else with an environment variable. 
 -->
@@ -25,8 +27,10 @@ else with an environment variable.
 	<constructor-arg value="${DATABASE_URL}" />
 </bean>
 ```
+
 In order to use a postgresql database provided by cloudfoundry:
 ```xml
+<!-- AFTER: TRANSPARENT CLOUDFOUNDRY SUPPORT -->
 <bean id="vcapservices" class="org.intalio.cloudfoundry.vcapservices.impl.VCapServices"/>
 <bean id="dbUrl" factory-bean="vcapservices" factory-method="getConnectionAsURI">
 	<constructor-arg value="DATABASE_URL" />
