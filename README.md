@@ -1,16 +1,15 @@
-VCAP_SERVICES parser
-====================
-Usecase:
+VCAP_SERVICES java parser
+=========================
+h3. Usecase:
 * connect to databases provisioned by cloundfoundry in a java application deployed on cloudfoundry
 * Auto-detect a cloudfoundry environment and fallback to a standard database setup transparently.
 
-API 'design':
+h3. API 'design':
 * Minimize changes to existing configs.
 * Ignore databases APIs; parse JSON and produces URIs.
 * Minimize dependencies
 
-Usage
-=====
+h2. Usage
 [ZkTodo2](https://github.com/simbo1905/ZkToDo2) database connection URL in a
 spring context file:
 ```xml
@@ -33,8 +32,7 @@ In order to use a postgresql database provided by cloudfoundry:
 ```
 If the app is not executed in cloudfoundry, it will continue to behave like before.
 
-Setup / Dependency
-==================
+h2. Setup / Dependency
 With maven
 ```xml
 <repositories>
@@ -53,8 +51,7 @@ With maven
 </dependencies>
 ```
 
-Build / Download
-================
+h2. Build / Download
 The library depends on json.org's parser.
 Build and tests with maven.
 Download here: http://www.intalio.org/public/maven2/org/intalio/cloudfoundry/vcapservices
@@ -101,10 +98,10 @@ h3. Multiple postgresql databases exposed in VCAP_SERVICES
 h2. License: MIT.
 This code is provided as is.
 
-Alternative
-===========
+h2. Alternative
 [vcap's runtime java library](https://github.com/cloudfoundry/vcap-java/tree/master/cloudfoundry-runtime).
 * Very elegant syntax in spring.
 * Database specific APIs awareness.
+But:
 * More dependencies
 * Specific config that will only work on cloudfoundry
