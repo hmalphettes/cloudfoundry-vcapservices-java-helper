@@ -1,8 +1,13 @@
 VCAP_SERVICES parser
 ====================
-Usecase: connect to databases provisioned by cloundfoundry in a java application deployed on cloudfoundry
-Auto-detect a cloudfoundry environment and fallback to a standard database setup transparently.
-API design: minimize changes to existing configs. Ignore databases APIs; parse JSON and produces URIs.
+Usecase:
+* connect to databases provisioned by cloundfoundry in a java application deployed on cloudfoundry
+* Auto-detect a cloudfoundry environment and fallback to a standard database setup transparently.
+
+API 'design':
+* Minimize changes to existing configs.
+* Ignore databases APIs; parse JSON and produces URIs.
+* Minimize dependencies
 
 Usage
 =====
@@ -54,8 +59,8 @@ The library depends on json.org's parser.
 Build and tests with maven.
 Download here: http://www.intalio.org/public/maven2/org/intalio/cloudfoundry/vcapservices
 
-API - Other Examples
-====================
+h2. API - Other Examples
+h3. Simple example
 ```xml
 <bean id="dbUrl" factory-bean="vcapservices" factory-method="getConnectionAsURI">
     
@@ -74,7 +79,7 @@ API - Other Examples
 </bean>
 ```
 
-Example: multiple postgresql databases exposed in VCAP_SERVICES
+h3. Multiple postgresql databases exposed in VCAP_SERVICES
 ```xml
 <bean id="dbOneUrl" factory-bean="vcapservices" factory-method="getConnectionAsURI">
 	<constructor-arg value="DATABASE_ONE_URL" />
@@ -93,9 +98,8 @@ Example: multiple postgresql databases exposed in VCAP_SERVICES
 </bean>
 ```
 
-
+h2. License: MIT.
 This code is provided as is.
-License: MIT.
 
 Alternative
 ===========
