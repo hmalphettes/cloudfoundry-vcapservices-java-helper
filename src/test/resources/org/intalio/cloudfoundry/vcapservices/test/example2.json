@@ -1,0 +1,65 @@
+{
+  "postgresql-9.0": [
+    {
+      "name": "postgresql-8654",
+      "label": "postgresql-9.0",
+      "plan": "free",
+      "tags": [
+        "postgresql",
+        "postgresql-9.0",
+        "relational"
+      ],
+      "credentials": {
+        "name": "d2df24941d49b4d7f99ac9739a9f5a4ca",
+        "host": "172.30.48.121",
+        "hostname": "172.30.48.121",
+        "port": 5432,
+        "user": "u90868e07a7344e069ac1c144622c4f3e",
+        "username": "u90868e07a7344e069ac1c144622c4f3e",
+        "password": "p3d886e97141c4c73adf14ec9b37d4c54"
+      }
+    }
+  ],
+  "redis-2.2": [
+    {
+      "name": "redis-resque",
+      "label": "redis-2.2",
+      "plan": "free",
+      "tags": [
+        "redis",
+        "redis-2.2",
+        "key-value",
+        "nosql"
+      ],
+      "credentials": {
+        "hostname": "172.30.48.42",
+        "host": "172.30.48.42",
+        "port": 5138,
+        "password": "5c5922ba-3788-443f-adbc-032a8398fe59",
+        "name": "b58be267-13c2-4e15-82ec-16a45144f1b1"
+      }
+    }
+  ],
+  "mongodb-1.8": [
+    {
+      "name": "ivanmongo",
+      "label": "mongodb-1.8",
+      "plan": "free",
+      "tags": [
+        "mongodb",
+        "mongodb-1.8",
+        "nosql",
+        "document"
+      ],
+      "credentials": {
+        "hostname": "172.30.48.61",
+        "host": "172.30.48.61",
+        "port": 25067,
+        "username": "eb27e4e3-6dc6-4afe-9378-c975b25bb3ce",
+        "password": "1b6bca1c-7685-49a4-bd61-dd0eebedad48",
+        "name": "d652e3b9-dd51-4bb0-9abb-67dfaa3809da",
+        "db": "db"
+      }
+    }
+  ]
+}

@@ -23,6 +23,8 @@
  */
 package org.intalio.cloudfoundry.vcapservices.impl;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
@@ -48,6 +50,97 @@ public class VCapServiceCredentials implements IVCapServiceCredentials {
  
 	private final JSONObject _json;
 	private final boolean _resolveSysProperty;
+
+	/**
+	 * Extract a connection URI from either an environment variable or from 
+	 * the VCAP_SERVICES json.
+	 * 
+	 * java -DDATABASE_URL=jdbc:postgresql://postgres:postgres@localhost/postgres
+	 * @param defaultURIOrSysPropertyForIt Value of the URI to use if
+	 *    VCAP_SERVICES is not present. Or sys property for this default value.
+	 * @param scheme The scheme of the URI. For example: 'jdbc:mysql' or 'jdbc:postgresql'
+	 * @param serviceTypeRegexpOrString name of the service type. Or regexp to
+	 * select it.
+	 * @param nameOfServiceSelector Name of the service or regexp to select it.
+	 * or null to get the first one.
+	 * @throws URISyntaxException 
+	 */
+	public static URI getConnectionAsURI(
+			String defaultURIOrSysPropertyForIt,
+			String scheme, String serviceTypeRegexpOrString)
+	throws URISyntaxException, JSONException {
+		return getConnectionAsURI(defaultURIOrSysPropertyForIt, scheme,
+					serviceTypeRegexpOrString, null);
+	}
+	
+	/**
+	 * Extract a connection URI from either an environment variable or from 
+	 * the VCAP_SERVICES json.
+	 * 
+	 * java -DDATABASE_URL=jdbc:postgresql://postgres:postgres@localhost/postgres
+	 * @param defaultURIOrSysPropertyForIt Value of the URI to use if
+	 *    VCAP_SERVICES is not present. Or sys property for this default value.
+	 * @param scheme The scheme of the URI. For example: 'jdbc:mysql' or 'jdbc:postgresql'
+	 * @param serviceTypeRegexpOrString name of the service type. Or regexp to
+	 * select it.
+	 * @param nameOfServiceSelector Name of the service or regexp to select it.
+	 * or null to get the first one.
+	 * @throws URISyntaxException 
+	 */
+	public static URI getConnectionAsURI(
+			String defaultURIOrSysPropertyForIt,
+			String scheme, String serviceTypeRegexpOrString,
+			String nameOfServiceSelector) 
+	throws URISyntaxException, JSONException {
+		String envServices = System.getenv("VCAP_SERVICES");
+		if (envServices == null) {
+			// in production it is always set in the environment
+			// looking for it in the system properties makes it easier to test.
+			envServices = System.getProperty("VCAP_SERVICES");
+		}
+        if (envServices == null) {
+        	if (defaultURIOrSysPropertyForIt.indexOf("://") != -1) {
+        		return new URI(defaultURIOrSysPropertyForIt);
+        	}
+        	String value = System.getenv(defaultURIOrSysPropertyForIt);
+        	if (value == null) {
+        		value = System.getProperty(defaultURIOrSysPropertyForIt);
+        	}
+        	if (value == null) {
+        		throw new IllegalArgumentException("The default URI '" +
+        				defaultURIOrSysPropertyForIt + " for the " +
+        				"database connection parameter is not defined;" +
+        				"Expecting either a URI, a system property or an " +
+        				"environment variable.");
+        	}
+        	return new URI(value);
+        }
+        VCapServices services = new VCapServices(envServices, false);
+        VCapServiceCredentials creds = null;
+        if (nameOfServiceSelector == null) {
+            creds = (VCapServiceCredentials)VCapServiceCredentials
+            			.getCredentialsOfFirstService(
+            		services, serviceTypeRegexpOrString);
+        } else {
+        	creds = (VCapServiceCredentials)VCapServiceCredentials
+        				.getCredentialsOfService(
+            		services, serviceTypeRegexpOrString, nameOfServiceSelector);
+        }
+        String db = creds.getDb();
+        if (db == null) {
+        	db = creds.getName();
+        }
+        String port = creds.getString("port");
+        if (port != null) {
+        	port = ":" + port;
+        } else {
+        	port = "";
+        }
+		return new URI(scheme + "://" + creds.getUser() + ":" + creds.getPassword() +
+				"@" + creds.getHostname() + port + "/" + db);
+	}
+	
+
 	
 	/**
 	 * Factory method for Ioc like spring.
@@ -55,7 +148,8 @@ public class VCapServiceCredentials implements IVCapServiceCredentials {
 	 * @param serviceType
 	 * @return
 	 */
-	public static IVCapServiceCredentials getCredentialsOfFirstService(IVCapServices services, String serviceType) {
+	public static IVCapServiceCredentials getCredentialsOfFirstService(
+			IVCapServices services, String serviceType) {
 		if (serviceType.startsWith("/") && serviceType.endsWith("/")) {
 			serviceType = serviceType.substring(1, serviceType.length() -1);
 			return getCredentialsOfFirstServiceRegex(services, serviceType);
@@ -71,7 +165,8 @@ public class VCapServiceCredentials implements IVCapServiceCredentials {
 	 * @param serviceTypeRegexp The regular experession to select the service type.
 	 * @return
 	 */
-	public static IVCapServiceCredentials getCredentialsOfFirstServiceRegex(IVCapServices services, String serviceTypeRegexp) {
+	public static IVCapServiceCredentials getCredentialsOfFirstServiceRegex(
+			IVCapServices services, String serviceTypeRegexp) {
 		Pattern serviceTypeReg = Pattern.compile(serviceTypeRegexp);
 		IVCapService vservice = services.getVCapService(serviceTypeReg, 0);
 		if (vservice == null) {
@@ -189,6 +284,13 @@ public class VCapServiceCredentials implements IVCapServiceCredentials {
 	public String getDb() {
 		return getString("db");
 	}
+
+        /**
+         * @return a URI such as postgres://user:password@hostname/dbname
+         */
+        public URI asURI() {
+             return null;
+        }
 	
 	/**
 	 * Returns the json string value for the given key.

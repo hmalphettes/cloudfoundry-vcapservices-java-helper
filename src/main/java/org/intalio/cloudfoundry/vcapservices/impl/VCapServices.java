@@ -23,6 +23,8 @@
  */
 package org.intalio.cloudfoundry.vcapservices.impl;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -44,7 +46,6 @@ import org.json.JSONObject;
  * 
  * 
  * @author hmalphettes
- *
  */
 public class VCapServices implements IVCapServices {
 	
@@ -56,7 +57,11 @@ public class VCapServices implements IVCapServices {
 	private final Map<String,IVCapService> _servicesIndexedByName = new HashMap<String, IVCapService>();
 	
 	public VCapServices() throws JSONException {
-		this.setServices(System.getenv("VCAP_SERVICES"), false);
+		String vcapServices = System.getenv("VCAP_SERVICES");
+		if (vcapServices == null) {
+			vcapServices = System.getProperty("VCAP_SERVICES");
+		}
+		this.setServices(vcapServices, false);
 	}
 	
 	/**
@@ -109,6 +114,8 @@ public class VCapServices implements IVCapServices {
 			}
 		}
 	}
+	
+
 	
 	/**
 	 * This reflects directly the way the vcap services are described in the environment variable

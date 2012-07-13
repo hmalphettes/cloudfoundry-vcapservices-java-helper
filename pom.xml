@@ -4,7 +4,7 @@
 
   <groupId>org.intalio.cloudfoundry</groupId>
   <artifactId>vcapservices</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <version>1.0.0.001</version>
   <packaging>jar</packaging>
 
   <name>VCAP_SERVICES Parser</name>
@@ -36,12 +36,12 @@
       <plugin>
         <artifactId>maven-jar-plugin</artifactId>
         <configuration>
-          <archive>  
+          <archive>
             <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
-          </archive> 
+          </archive>
         </configuration>
       </plugin>
-      <plugin>   
+      <plugin>
         <groupId>org.apache.felix</groupId>
         <artifactId>maven-bundle-plugin</artifactId>
         <executions>
@@ -50,7 +50,7 @@
             <phase>process-classes</phase>
             <goals>
               <goal>manifest</goal>
-            </goals>   
+            </goals>
           </execution>
         </executions>
         <configuration>
@@ -64,5 +64,5 @@
       </plugin>
     </plugins>
   </build>
-  
-</project> 
+
+</project>

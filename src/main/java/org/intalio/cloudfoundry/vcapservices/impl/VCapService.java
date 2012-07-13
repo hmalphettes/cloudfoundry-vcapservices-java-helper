@@ -139,7 +139,7 @@ public class VCapService implements IVCapService {
 	public IVCapServiceCredentials getCredentials() {
 		return _cred;
 	}
-	
+
 	/**
 	 * Returns the json string value for the given key.
 	 * Takes care of resolving system properties if necessary.
