@@ -6,7 +6,7 @@ API design: minimize changes to existing configs. Ignore databases APIs; parse J
 
 Usage
 =====
-(ZkTodo2)[https://github.com/simbo1905/ZkToDo2] database connection URL in a
+[ZkTodo2](https://github.com/simbo1905/ZkToDo2) database connection URL in a
 spring context file:
 ```xml
 <!-- 
