@@ -2,13 +2,13 @@ VCAP_SERVICES parser
 ====================
 Usecase: connect to databases provisioned by cloundfoundry in a java application deployed on cloudfoundry
 Auto-detect a cloudfoundry environment and fallback to a standard database setup transparently.
-API design: minimize changes to existing configs.
+API design: minimize changes to existing configs. Ignore databases APIs; parse JSON and produces URIs.
 
 Usage
 =====
 (ZkTodo2)[https://github.com/simbo1905/ZkToDo2] database connection URL in a
 spring context file:
-```
+```xml
 <!-- 
 DATABASE_URL should be set with either "-DDATABASE_URL=postgres://user:password@hostname/dbname"
 else with an environment variable. 
@@ -18,7 +18,7 @@ else with an environment variable.
 </bean>
 ```
 In order to use a postgresql database provided by cloudfoundry:
-```
+```xml
 <bean id="vcapservices" class="org.intalio.cloudfoundry.vcapservices.impl.VCapServices"/>
 <bean id="dbUrl" factory-bean="vcapservices" factory-method="getConnectionAsURI">
 	<constructor-arg value="DATABASE_URL" />
@@ -31,7 +31,7 @@ If the app is not executed in cloudfoundry, it will continue to behave like befo
 Setup / Dependency
 ==================
 With maven
-```
+```xml
 <repositories>
 	<repository>
 	    <id>intalio.org</id>
@@ -54,9 +54,9 @@ The library depends on json.org's parser.
 Build and tests with maven.
 Download here: http://www.intalio.org/public/maven2/org/intalio/cloudfoundry/vcapservices
 
-API - VCAP_SERVICES Intro
-=========================
-```
+API - Other Examples
+====================
+```xml
 <bean id="dbUrl" factory-bean="vcapservices" factory-method="getConnectionAsURI">
     
     <!-- default URL of name of the sys property/env variable that contains
@@ -75,7 +75,7 @@ API - VCAP_SERVICES Intro
 ```
 
 Example: multiple postgresql databases exposed in VCAP_SERVICES
-```
+```xml
 <bean id="dbOneUrl" factory-bean="vcapservices" factory-method="getConnectionAsURI">
 	<constructor-arg value="DATABASE_ONE_URL" />
 	<constructor-arg value="postgresql" />
@@ -97,6 +97,10 @@ Example: multiple postgresql databases exposed in VCAP_SERVICES
 This code is provided as is.
 License: MIT.
 
-Alternatives: vcap's runtime java library.
-But: it has a lot of dependencies and it does not support transparently 
-switching from a cloudfoundry deployment to a non-cloudfoundry deployment
+Alternative
+===========
+[vcap's runtime java library](https://github.com/cloudfoundry/vcap-java/tree/master/cloudfoundry-runtime).
+* Very elegant syntax in spring.
+* Database specific APIs awareness.
+* More dependencies
+* Specific config that will only work on cloudfoundry
