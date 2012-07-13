@@ -32,6 +32,8 @@ import org.intalio.cloudfoundry.vcapservices.IVCapServiceCredentials;
 import org.intalio.cloudfoundry.vcapservices.impl.VCapServiceCredentials;
 import org.intalio.cloudfoundry.vcapservices.impl.VCapServices;
 
+import com.sun.org.apache.xalan.internal.xsltc.compiler.sym;
+
 /**
  * Very basic tests. For simplicity reason, we don't use junit so that we can
  * develop it in eclipse PDE in the same project without having to have the
@@ -122,31 +124,36 @@ public class TestVCapServices {
 	}
 	
 	private static String EXAMPLE_POSTGRES_JDBC_URI_STR = 
-			"jdbc:postgresql://postgres:postgres@localhost/postgres";
+			"postgresql://postgres:postgres@localhost/postgres";
 	private static URI EXAMPLE_POSTGRES_JDBC_URI = 
 			URI.create(EXAMPLE_POSTGRES_JDBC_URI_STR);
 	
 	@Test
 	public void testTwoAsURINoVCAP() throws Exception {
 		System.setProperty("DATABASE_URL", EXAMPLE_POSTGRES_JDBC_URI_STR);
-		URI conn = VCapServiceCredentials.getConnectionAsURI("DATABASE_URL",
-				"jdbc:postgresql", "/^postgres.*/");
+		VCapServices services = new VCapServices();
+		URI conn = services.getConnectionAsURI("DATABASE_URL",
+				"postgresql", "/^postgres.*/");
 		Assert.assertNotNull(conn);
 		Assert.assertEquals(EXAMPLE_POSTGRES_JDBC_URI, conn);
+		Assert.assertEquals("postgres:postgres", conn.getUserInfo());
 	}
 
 	@Test
 	public void testTwoAsURIWithVCAP() throws Exception {
 		System.setProperty("DATABASE_URL", EXAMPLE_POSTGRES_JDBC_URI_STR);
 		System.setProperty("VCAP_SERVICES", readAsString("example2.json"));
-		URI conn = VCapServiceCredentials.getConnectionAsURI("DATABASE_URL",
-				"jdbc:postgresql", "/^postgres.*/");
+		VCapServices services = new VCapServices();
+		URI conn = services.getConnectionAsURI("DATABASE_URL",
+				"postgresql", "/^postgres.*/");
 		Assert.assertNotNull(conn);
-		URI expected = new URI("jdbc:postgresql://u90868e07a7344e069ac1c144622c4f3e" +
+		URI expected = new URI("postgresql://u90868e07a7344e069ac1c144622c4f3e" +
 				":p3d886e97141c4c73adf14ec9b37d4c54" +
 				"@172.30.48.121:5432" +
 				"/d2df24941d49b4d7f99ac9739a9f5a4ca");
+		Assert.assertNotNull(expected.getUserInfo());
 		Assert.assertEquals(expected, conn);
+		Assert.assertNotNull(conn.getUserInfo());
 	}
 	
 

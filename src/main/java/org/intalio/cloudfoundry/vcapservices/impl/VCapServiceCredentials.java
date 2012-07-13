@@ -55,21 +55,22 @@ public class VCapServiceCredentials implements IVCapServiceCredentials {
 	 * Extract a connection URI from either an environment variable or from 
 	 * the VCAP_SERVICES json.
 	 * 
-	 * java -DDATABASE_URL=jdbc:postgresql://postgres:postgres@localhost/postgres
+	 * java -DDATABASE_URL=postgresql://postgres:postgres@localhost/postgres
 	 * @param defaultURIOrSysPropertyForIt Value of the URI to use if
 	 *    VCAP_SERVICES is not present. Or sys property for this default value.
-	 * @param scheme The scheme of the URI. For example: 'jdbc:mysql' or 'jdbc:postgresql'
+	 * @param scheme The scheme of the URI. For example: 'mysql' or 'postgresql'
 	 * @param serviceTypeRegexpOrString name of the service type. Or regexp to
 	 * select it.
 	 * @param nameOfServiceSelector Name of the service or regexp to select it.
 	 * or null to get the first one.
 	 * @throws URISyntaxException 
 	 */
-	public static URI getConnectionAsURI(
+	protected static URI getConnectionAsURI(VCapServices services,
 			String defaultURIOrSysPropertyForIt,
 			String scheme, String serviceTypeRegexpOrString)
 	throws URISyntaxException, JSONException {
-		return getConnectionAsURI(defaultURIOrSysPropertyForIt, scheme,
+		return getConnectionAsURI(services,
+				    defaultURIOrSysPropertyForIt, scheme,
 					serviceTypeRegexpOrString, null);
 	}
 	
@@ -77,17 +78,18 @@ public class VCapServiceCredentials implements IVCapServiceCredentials {
 	 * Extract a connection URI from either an environment variable or from 
 	 * the VCAP_SERVICES json.
 	 * 
-	 * java -DDATABASE_URL=jdbc:postgresql://postgres:postgres@localhost/postgres
+	 * java -DDATABASE_URL=postgresql://postgres:postgres@localhost/postgres
 	 * @param defaultURIOrSysPropertyForIt Value of the URI to use if
 	 *    VCAP_SERVICES is not present. Or sys property for this default value.
-	 * @param scheme The scheme of the URI. For example: 'jdbc:mysql' or 'jdbc:postgresql'
+	 * @param scheme The scheme of the URI. For example: 'mysql' or 'postgresql'
 	 * @param serviceTypeRegexpOrString name of the service type. Or regexp to
 	 * select it.
 	 * @param nameOfServiceSelector Name of the service or regexp to select it.
 	 * or null to get the first one.
 	 * @throws URISyntaxException 
 	 */
-	public static URI getConnectionAsURI(
+	protected static URI getConnectionAsURI(
+			VCapServices services,
 			String defaultURIOrSysPropertyForIt,
 			String scheme, String serviceTypeRegexpOrString,
 			String nameOfServiceSelector) 
@@ -115,7 +117,6 @@ public class VCapServiceCredentials implements IVCapServiceCredentials {
         	}
         	return new URI(value);
         }
-        VCapServices services = new VCapServices(envServices, false);
         VCapServiceCredentials creds = null;
         if (nameOfServiceSelector == null) {
             creds = (VCapServiceCredentials)VCapServiceCredentials
@@ -125,6 +126,13 @@ public class VCapServiceCredentials implements IVCapServiceCredentials {
         	creds = (VCapServiceCredentials)VCapServiceCredentials
         				.getCredentialsOfService(
             		services, serviceTypeRegexpOrString, nameOfServiceSelector);
+        }
+        if (creds == null) {
+        	String nameLabel = nameOfServiceSelector == null ? ""
+        			: "; service-name=" + nameOfServiceSelector;
+        	throw new IllegalArgumentException("Unable to find in VCAP_SERVICES" +
+        			" a service for (service-type=" + serviceTypeRegexpOrString +
+        			nameLabel + "). VCAP_SERVICES: \n" + services);
         }
         String db = creds.getDb();
         if (db == null) {

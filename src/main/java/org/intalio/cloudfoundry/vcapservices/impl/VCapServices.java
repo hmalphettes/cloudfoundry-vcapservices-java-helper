@@ -61,7 +61,9 @@ public class VCapServices implements IVCapServices {
 		if (vcapServices == null) {
 			vcapServices = System.getProperty("VCAP_SERVICES");
 		}
-		this.setServices(vcapServices, false);
+		if (vcapServices != null) {
+			this.setServices(vcapServices, false);
+		}
 	}
 	
 	/**
@@ -226,4 +228,52 @@ public class VCapServices implements IVCapServices {
 		}
 		return res;
 	}
+	
+	/**
+	 * Extract a connection URI from either an environment variable or from 
+	 * the VCAP_SERVICES json.
+	 * <p>
+	 * java -DDATABASE_URL=postgresql://postgres:postgres@localhost/postgres
+	 * </p>
+	 * @param defaultURIOrSysPropertyForIt Value of the URI to use if
+	 *    VCAP_SERVICES is not present. Or sys property for this default value.
+	 * @param scheme The scheme of the URI. For example: 'mysql' or 'postgresql'
+	 * @param serviceTypeRegexpOrString name of the service type. Or regexp to
+	 * select it.
+	 * @param nameOfServiceSelector Name of the service or regexp to select it.
+	 * or null to get the first one.
+	 * @throws URISyntaxException 
+	 */
+	public URI getConnectionAsURI(
+			String defaultURIOrSysPropertyForIt,
+			String scheme, String serviceTypeRegexpOrString)
+	throws URISyntaxException, JSONException {
+		return VCapServiceCredentials.getConnectionAsURI(this,
+				defaultURIOrSysPropertyForIt, scheme, serviceTypeRegexpOrString);
+	}
+	
+	/**
+	 * Extract a connection URI from either an environment variable or from 
+	 * the VCAP_SERVICES json.
+	 * <p>
+	 * java -DDATABASE_URL=postgresql://postgres:postgres@localhost/postgres
+	 * </p>
+	 * @param defaultURIOrSysPropertyForIt Value of the URI to use if
+	 *    VCAP_SERVICES is not present. Or sys property for this default value.
+	 * @param scheme The scheme of the URI. For example: 'mysql' or 'postgresql'
+	 * @param serviceTypeRegexpOrString name of the service type. Or regexp to
+	 * select it.
+	 * @param nameOfServiceSelector Name of the service or regexp to select it.
+	 * or null to get the first one.
+	 * @throws URISyntaxException 
+	 */
+	public URI getConnectionAsURI(
+			String defaultURIOrSysPropertyForIt,
+			String scheme, String serviceTypeRegexpOrString,
+			String nameOfServiceSelector)
+    throws URISyntaxException, JSONException {
+		return VCapServiceCredentials.getConnectionAsURI(this,
+				defaultURIOrSysPropertyForIt, scheme, serviceTypeRegexpOrString,
+				nameOfServiceSelector);
+	}	
 }
