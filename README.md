@@ -3,7 +3,7 @@ VCAP_SERVICES java parser
 
 ### Usecase:
 
-* connect to databases provisioned by cloundfoundry in a java application deployed on cloudfoundry
+* connect to databases provisioned by cloudfoundry in a java application deployed on cloudfoundry
 * Auto-detect a cloudfoundry environment and fallback to a standard database setup transparently.
 
 ### API 'design':
